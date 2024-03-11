@@ -20,13 +20,19 @@
         methods: {
             async addNote(e) {
                 e.preventDefault()
-                this.note.key
+                this.note.key = (parseInt(this.notes[this.notes.length - 1].key) + 1).toString()
                 const response = await axios.post('http://localhost:3000/api/create', this.note)
                 console.log(response.data)
                 this.notes.push(response.data)
                 this.note.title = ''
                 this.note.description = ''
                 this.note.key = ''
+            },
+            async removeNote(item, i) {
+                // console.log(key)
+                const response = await axios.delete(`http://localhost:3000/` + item._id)
+                this.notes.splice(i, 1)
+                console.log(response.data)
             }
         }
     }
@@ -38,6 +44,7 @@
             <h1>{{ note.title }}</h1>
             <p>{{ note.description }}</p>
             <p>{{ note.key }}</p>
+            <button @click="removeNote(note, i)">Remove Note</button>
         </li>
     </ul>
     <div>
