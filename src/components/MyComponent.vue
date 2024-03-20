@@ -4,6 +4,7 @@
         name: 'App',
         data() {
             return {
+                baseApiURL: import.meta.env.VITE_APP_BASE_API_URL,
                 notes: [],
                 note: {                    
                     isEdit: false,
@@ -14,7 +15,7 @@
             }
         },
         async mounted() {
-            const response = await axios.get('http://localhost:3000/api/notes')
+            const response = await axios.get(this.baseApiURL + 'api/notes')
             console.log(response.data)
             this.notes = response.data
         },
@@ -22,7 +23,7 @@
             async addNote(e) {
                 e.preventDefault()
                 this.note.key = (parseInt(this.notes[this.notes.length - 1].key) + 1).toString()
-                const response = await axios.post('http://localhost:3000/api/create', this.note)
+                const response = await axios.post(this.baseApiURL + 'api/create', this.note)
                 console.log(response.data)
                 this.notes.push(response.data)
                 this.note.title = ''
@@ -33,7 +34,7 @@
                 this.notes[i].isEdit = true
             },
             async updateNote(item, i) {
-                const response = await axios.put(`http://localhost:3000/` + item._id, {
+                const response = await axios.put(this.baseApiURL + item._id, {
                     title: this.notes[i].title,
                     description: this.notes[i].description,
                     key: this.notes[i].key
@@ -43,7 +44,7 @@
             },
             async removeNote(item, i) {
                 // console.log(key)
-                const response = await axios.delete(`http://localhost:3000/` + item._id)
+                const response = await axios.delete(this.baseApiURL + item._id)
                 this.notes.splice(i, 1)
                 console.log(response.data)
             }
