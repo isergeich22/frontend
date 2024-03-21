@@ -9,8 +9,7 @@
                 note: {                    
                     isEdit: false,
                     title: '',
-                    description: '',
-                    key: ''
+                    description: ''
                 }
             }
         },
@@ -22,13 +21,11 @@
         methods: {
             async addNote(e) {
                 e.preventDefault()
-                this.note.key = (parseInt(this.notes[this.notes.length - 1].key) + 1).toString()
                 const response = await axios.post(this.baseApiURL + 'api/create', this.note)
                 console.log(response.data)
                 this.notes.push(response.data)
                 this.note.title = ''
                 this.note.description = ''
-                this.note.key = ''
             },
             async editNote(i) {
                 this.notes[i].isEdit = true
@@ -36,8 +33,7 @@
             async updateNote(item, i) {
                 const response = await axios.put(this.baseApiURL + item._id, {
                     title: this.notes[i].title,
-                    description: this.notes[i].description,
-                    key: this.notes[i].key
+                    description: this.notes[i].description
                 })
                 console.log(response.data)
                 this.notes[i].isEdit = false
